@@ -9,23 +9,25 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Install FontAwesome
-      run: sudo apt install fonts-font-awesome
-    - name: Download Tectonic
-      run: cargo install tectonic
+    - name: Install Tectonic and FontAwesome
+      run: |
+          docker build . -t tectonic
     - name: Build
       run: |
-          tectonic main.tex
-          mv main.pdf CV.pdf
+          docker run -v $PWD:/usr/src/tex tectonic:latest main.tex
+    - name: Rename
+      run: |
+          mkdir output
+          mv main.pdf output/CV.pdf
     - uses: actions/upload-artifact@v1
       with:
         name: CV.pdf
-        path: CV.pdf
+        path: output/CV.pdf
     - name: Deploy to gh-pages branch
       uses: docker://peaceiris/gh-pages:latest
       env:
         ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
         PUBLISH_BRANCH: gh-pages
-        PUBLISH_DIR: ./
+        PUBLISH_DIR: ./output
       with:
         emptyCommits: false
