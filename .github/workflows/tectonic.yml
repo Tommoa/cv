@@ -14,8 +14,18 @@ jobs:
     - name: Download Tectonic
       run: cargo install tectonic
     - name: Build
-      run: tectonic main.tex
+      run: |
+          tectonic main.tex
+          mv main.pdf CV.pdf
     - uses: actions/upload-artifact@v1
       with:
         name: CV.pdf
-        path: main.pdf
+        path: CV.pdf
+    - name: Deploy to gh-pages branch
+      uses: docker://peaceiris/gh-pages:latest
+      env:
+        ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+        PUBLISH_BRANCH: gh-pages
+        PUBLISH_DIR: ./
+      with:
+        emptyCommits: false
