@@ -9,25 +9,29 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Install Tectonic and FontAwesome
-      run: |
-          docker build . -t tectonic
-    - name: Build
-      run: |
-          docker run -v $PWD:/usr/src/tex tectonic:latest main.tex
+    - uses: actions/cache@v2
+      id: cache
+      with:
+        path: |
+          output/CV.pdf
+        key: ${{ hashFiles('**') }}
+    - uses: Tommoa/tectonic-fontawesome-action@master
+      if: steps.cache.outputs.cache-hit != 'true'
+      with:
+        tex_path: main.tex
     - name: Rename
+      if: steps.cache.outputs.cache-hit != 'true'
       run: |
-          mkdir output
+          mkdir -p output
           mv main.pdf output/CV.pdf
     - uses: actions/upload-artifact@v1
       with:
         name: CV.pdf
         path: output/CV.pdf
-    - name: Deploy to gh-pages branch
-      uses: docker://peaceiris/gh-pages:latest
-      env:
-        ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-        PUBLISH_BRANCH: gh-pages
-        PUBLISH_DIR: ./output
+    - name: Deploy to GitHub Pages
+      if: steps.cache.outputs.cache-hit != 'true'
+      uses: peaceiris/actions-gh-pages@v3
       with:
-        emptyCommits: false
+        deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+        publish_dir: ./output
+        allow_empty_commit: false
