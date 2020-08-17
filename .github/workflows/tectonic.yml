@@ -13,7 +13,7 @@ jobs:
       id: cache
       with:
         path: |
-          output/CV.pdf
+          output/cv.pdf
         key: ${{ hashFiles('**') }}
     - uses: Tommoa/tectonic-fontawesome-action@v0.2
       if: steps.cache.outputs.cache-hit != 'true'
@@ -23,11 +23,11 @@ jobs:
       if: steps.cache.outputs.cache-hit != 'true'
       run: |
           mkdir -p output
-          mv main.pdf output/CV.pdf
+          mv main.pdf output/cv.pdf
     - uses: actions/upload-artifact@v1
       with:
-        name: CV.pdf
-        path: output/CV.pdf
+        name: cv.pdf
+        path: output/cv.pdf
     - name: Deploy to GitHub Pages
       if: steps.cache.outputs.cache-hit != 'true'
       uses: peaceiris/actions-gh-pages@v3
