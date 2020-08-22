@@ -70,8 +70,8 @@
 
 \usepackage{titlesec} % Required for customizing section/subsection/etc titles
 \usepackage{textcase}
-\titlespacing{\section}{0pt}{0pt}{0pt} % Removes the spacing around the main section titles
-\titlespacing{\subsection}{0pt}{0pt}{0pt} % Removes the spacing around the subsections
+%\titlespacing{\section}{0pt}{0pt}{0pt} % Removes the spacing around the main section titles
+%\titlespacing{\subsection}{0pt}{0pt}{0pt} % Removes the spacing around the subsections
 \newcommand{\sectionspace}{\vspace{8pt}} % Defines a command to add a set amount of space after sections and subsections
 
 \titleformat{\section}{ % Customize the large section titles
