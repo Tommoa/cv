@@ -15,7 +15,7 @@ jobs:
         path: |
           output/cv.pdf
         key: ${{ hashFiles('**') }}
-    - uses: Tommoa/tectonic-fontawesome-action@v0.2
+    - uses: Tommoa/tectonic-fontawesome-action@v0.5
       if: steps.cache.outputs.cache-hit != 'true'
       with:
         tex_path: main.tex
